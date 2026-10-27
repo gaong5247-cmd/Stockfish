@@ -334,12 +334,22 @@ class SharedMemoryBackend {
             return;
         }
 
-        DWORD wait_result = WaitForSingleObject(hMutex, INFINITE);
+        // Fall back to local memory if another initializer stops responding.
+        DWORD wait_result = WaitForSingleObject(hMutex, 1000);
         if (wait_result != WAIT_OBJECT_0)
         {
-            const DWORD err    = GetLastError();
-            last_error_message = GetLastErrorAsString(err);
-            status             = Status::MutexWaitError;
+            if (wait_result == WAIT_TIMEOUT)
+                last_error_message = "Timed out waiting for shared memory initialization";
+            else if (wait_result == WAIT_ABANDONED)
+            {
+                // An abandoned mutex is acquired, but its protected data may be incomplete.
+                ReleaseMutex(hMutex);
+                last_error_message = "Shared memory initialization was abandoned";
+            }
+            else
+                last_error_message = GetLastErrorAsString(GetLastError());
+
+            status = Status::MutexWaitError;
             CloseHandle(hMutex);
             cleanup_partial();
             return;

@@ -22,6 +22,7 @@
 #include <atomic>
 #include <cassert>
 #include <cerrno>
+#include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
@@ -183,11 +184,21 @@ struct InitLock {
         if (!lock_fd.is_valid())
             return {};
 
-        // Blocks here if another process is currently initializing
-        while (flock(lock_fd.get(), LOCK_EX) == -1)
+        // A stalled initializer must not prevent the engine from starting.
+        // Keep the uncontended path free of clock queries.
+        std::optional<std::chrono::steady_clock::time_point> deadline;
+        while (flock(lock_fd.get(), LOCK_EX | LOCK_NB) == -1)
         {
-            if (errno != EINTR)
+            if (errno != EINTR && errno != EWOULDBLOCK && errno != EAGAIN)
                 return {};  // failed to acquire
+
+            const auto now = std::chrono::steady_clock::now();
+            if (!deadline)
+                deadline = now + std::chrono::milliseconds(1000);
+            if (now >= *deadline)
+                return {};  // use local memory instead of waiting indefinitely
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
 
         return InitLock(std::move(lock_fd));

@@ -1,0 +1,137 @@
+name: Fishtest preflight
+
+on:
+  push:
+    branches: [my-first-test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fishtest-preflight-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux AVX2 startup and worker compatibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Record build environment
+        run: |
+          mkdir -p preflight-results
+          g++ --version > preflight-results/compiler.txt
+          python3 --version > preflight-results/python.txt
+          git rev-parse HEAD > preflight-results/commit.txt
+          cp Copying.txt AUTHORS preflight-results/
+
+      - name: Build embedded-network engine
+        env:
+          CXXFLAGS: -Werror
+        run: |
+          make -j2 -C src build ARCH=x86-64-avx2 COMP=gcc 2>&1 | tee preflight-results/build.log
+          cp src/stockfish preflight-results/stockfish-linux-x86-64-avx2
+
+      - name: Check startup, UCI, perft and bench
+        run: |
+          python3 tests/fishtest_preflight.py src/stockfish --expected-bench 2389370 \
+            --log preflight-results/preflight.log | tee preflight-results/preflight.json
+
+      - name: Reproduce held initialization lock
+        run: |
+          python3 tests/startup_lock.py src/stockfish | tee preflight-results/held-lock.json
+
+      - name: Build external-network engine with worker-style PGO
+        env:
+          CXXFLAGS: -Werror -DNNUE_EMBEDDING_OFF
+        run: |
+          make -C src clean
+          make -j2 -C src profile-build ARCH=x86-64-avx2 COMP=gcc 2>&1 | tee preflight-results/external-build.log
+
+      - name: Discover default network before NNUE is installed
+        run: |
+          mkdir -p "$RUNNER_TEMP/stockfish-preflight-no-net"
+          cp src/stockfish "$RUNNER_TEMP/stockfish-preflight-no-net/stockfish"
+          python3 tests/fishtest_preflight.py "$RUNNER_TEMP/stockfish-preflight-no-net/stockfish" \
+            --uci-only --require-no-net --log preflight-results/missing-net.log \
+            | tee preflight-results/missing-net.json
+
+      - name: Check external-network engine after installing NNUE
+        run: |
+          cp src/*.nnue "$RUNNER_TEMP/stockfish-preflight-no-net/"
+          python3 tests/fishtest_preflight.py "$RUNNER_TEMP/stockfish-preflight-no-net/stockfish" \
+            --expected-bench 2389370 --log preflight-results/external-preflight.log \
+            | tee preflight-results/external-preflight.json
+
+      - name: Upload engine and verification evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fishtest-preflight-linux-x86-64-avx2
+          path: preflight-results/
+          retention-days: 7
+          if-no-files-found: warn
+
+  windows:
+    name: Windows AVX2 startup and mutex ownership
+    runs-on: windows-2022
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up MinGW
+        uses: msys2/setup-msys2@e9898307ac31d1a803454791be09ab9973336e1c # v2.31.1
+        with:
+          msystem: mingw64
+          install: mingw-w64-x86_64-gcc make git
+
+      - name: Record build environment
+        run: |
+          mkdir -p preflight-results
+          g++ --version > preflight-results/compiler.txt
+          git rev-parse HEAD > preflight-results/commit.txt
+          cp Copying.txt AUTHORS preflight-results/
+
+      - name: Build embedded-network engine
+        env:
+          CXXFLAGS: -Werror
+        run: |
+          set -euo pipefail
+          make -j2 -C src build ARCH=x86-64-avx2 COMP=mingw 2>&1 | tee preflight-results/build.log
+          cp src/stockfish.exe preflight-results/stockfish-windows-x86-64-avx2.exe
+
+      - name: Check startup, UCI, perft and bench with native Python
+        shell: pwsh
+        run: |
+          python --version | Set-Content preflight-results/python.txt
+          python tests/fishtest_preflight.py src/stockfish.exe --expected-bench 2389370 --log preflight-results/preflight.log | Tee-Object -FilePath preflight-results/preflight.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Check Win32 timeout and abandoned mutex ownership
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -static tests/startup_lock_windows.cpp \
+            -o preflight-results/startup-lock-windows.exe 2>&1 | tee preflight-results/mutex-build.log
+          ./preflight-results/startup-lock-windows.exe | tee preflight-results/mutex-test.log
+
+      - name: Upload engine and verification evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fishtest-preflight-windows-x86-64-avx2
+          path: preflight-results/
+          retention-days: 7
+          if-no-files-found: warn

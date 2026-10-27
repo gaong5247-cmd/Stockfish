@@ -1,0 +1,636 @@
+{
+  "date": "2026-10-27",
+  "status": "experimental_performance_nonregression_not_established",
+  "base_commit": "ff3a6c508ed731f0dcf253f4ddf646df19a62f84",
+  "bench_signature": 2389370,
+  "compiler": "GCC 13.3.0",
+  "cpu": "Intel Xeon Platinum 8573C (virtualized host)",
+  "normal_build": "make build ARCH=x86-64-avx2 COMP=gcc; LTO, no PGO",
+  "worker_build": "env CXXFLAGS='-DNNUE_EMBEDDING_OFF -Werror' make profile-build ARCH=x86-64-avx2 COMP=gcc",
+  "elo_test_run": false,
+  "comparisons": {
+    "rejected_pawn_history_hoist": {
+      "cpu_affinity": 0,
+      "pairs": 8,
+      "candidate": "speed",
+      "signature": 2389370,
+      "sha256": {
+        "base": "2178961028eafaefb8ad07cceda45884dbf2f1bef025ad1dbe8266716d471df9",
+        "speed": "8742ee962bb5f825c99400622aeea37dc591e26de867514a9be74526fbcb487b"
+      },
+      "records": [
+        {
+          "variant": "base",
+          "wall_seconds": 3.030866146000335,
+          "milliseconds": 2782,
+          "nodes": 2389370,
+          "nps": 858867
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 3.024210513998696,
+          "milliseconds": 2743,
+          "nodes": 2389370,
+          "nps": 871079
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 2.9995181690010213,
+          "milliseconds": 2719,
+          "nodes": 2389370,
+          "nps": 878767
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.987443815000006,
+          "milliseconds": 2734,
+          "nodes": 2389370,
+          "nps": 873946
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.977461222999409,
+          "milliseconds": 2732,
+          "nodes": 2389370,
+          "nps": 874586
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 3.05315081900153,
+          "milliseconds": 2743,
+          "nodes": 2389370,
+          "nps": 871079
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 2.9941797420015064,
+          "milliseconds": 2711,
+          "nodes": 2389370,
+          "nps": 881361
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.965498445000776,
+          "milliseconds": 2718,
+          "nodes": 2389370,
+          "nps": 879091
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.9964340130009077,
+          "milliseconds": 2748,
+          "nodes": 2389370,
+          "nps": 869494
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 2.994367355000577,
+          "milliseconds": 2714,
+          "nodes": 2389370,
+          "nps": 880386
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 3.1243226549995597,
+          "milliseconds": 2836,
+          "nodes": 2389370,
+          "nps": 842514
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.964154466999389,
+          "milliseconds": 2713,
+          "nodes": 2389370,
+          "nps": 880711
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.9576293829995848,
+          "milliseconds": 2713,
+          "nodes": 2389370,
+          "nps": 880711
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 2.989498282000568,
+          "milliseconds": 2711,
+          "nodes": 2389370,
+          "nps": 881361
+        },
+        {
+          "variant": "speed",
+          "wall_seconds": 2.992292756000097,
+          "milliseconds": 2706,
+          "nodes": 2389370,
+          "nps": 882989
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 3.097833559000719,
+          "milliseconds": 2734,
+          "nodes": 2389370,
+          "nps": 873946
+        }
+      ],
+      "geometric_mean_speedup_percent": -0.03347141169174727,
+      "paired_log_standard_error": 0.00665339879559892,
+      "approx_paired_t_95_percent_interval_percent": [
+        -1.5941623814485268,
+        1.5519717106001498
+      ],
+      "warning": "Single machine, non-PGO build, small sample, uncontrolled host; interval is descriptive, not an Elo or cross-machine guarantee."
+    },
+    "startup_embedded_no_pgo": {
+      "cpu_affinity": 0,
+      "pairs": 8,
+      "candidate": "startup",
+      "signature": 2389370,
+      "sha256": {
+        "base": "2178961028eafaefb8ad07cceda45884dbf2f1bef025ad1dbe8266716d471df9",
+        "startup": "f2322afb94640d97815edfd5e76034af34cf2b36ed9f7f5df9ee82252c950a11"
+      },
+      "records": [
+        {
+          "variant": "base",
+          "wall_seconds": 3.002192964000642,
+          "milliseconds": 2742,
+          "nodes": 2389370,
+          "nps": 871396
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.1765118740004255,
+          "milliseconds": 2902,
+          "nodes": 2389370,
+          "nps": 823352
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.4522820559996035,
+          "milliseconds": 2756,
+          "nodes": 2389370,
+          "nps": 866970
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 3.275144378998448,
+          "milliseconds": 2718,
+          "nodes": 2389370,
+          "nps": 879091
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 3.1571082370010117,
+          "milliseconds": 2886,
+          "nodes": 2389370,
+          "nps": 827917
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.2533029339992936,
+          "milliseconds": 2931,
+          "nodes": 2389370,
+          "nps": 815206
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.086039907999293,
+          "milliseconds": 2835,
+          "nodes": 2389370,
+          "nps": 842811
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.9705925839989504,
+          "milliseconds": 2720,
+          "nodes": 2389370,
+          "nps": 878444
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.9700127139985852,
+          "milliseconds": 2718,
+          "nodes": 2389370,
+          "nps": 879091
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.0270584500012774,
+          "milliseconds": 2778,
+          "nodes": 2389370,
+          "nps": 860104
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.961244774000079,
+          "milliseconds": 2720,
+          "nodes": 2389370,
+          "nps": 878444
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.972958008000205,
+          "milliseconds": 2717,
+          "nodes": 2389370,
+          "nps": 879414
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.968361997000102,
+          "milliseconds": 2720,
+          "nodes": 2389370,
+          "nps": 878444
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.963813057000152,
+          "milliseconds": 2727,
+          "nodes": 2389370,
+          "nps": 876189
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.0471259570003895,
+          "milliseconds": 2808,
+          "nodes": 2389370,
+          "nps": 850915
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 3.1494663299999957,
+          "milliseconds": 2843,
+          "nodes": 2389370,
+          "nps": 840439
+        }
+      ],
+      "geometric_mean_speedup_percent": -1.7421488063843984,
+      "paired_log_standard_error": 0.007939779744546738,
+      "approx_paired_t_95_percent_interval_percent": [
+        -3.569978563015571,
+        0.12032743864779259
+      ],
+      "warning": "Single machine, non-PGO build, small sample, uncontrolled host; interval is descriptive, not an Elo or cross-machine guarantee."
+    },
+    "startup_external_pgo": {
+      "cpu_affinity": 0,
+      "pairs": 8,
+      "candidate": "startup",
+      "build_description": "GCC 13.3 AVX2 + LTO + PGO, external NNUE",
+      "signature": 2389370,
+      "sha256": {
+        "base": "d56e8dde587988bfbebe897c09ca784d3a78ff217916c8414b55e5d581fde60d",
+        "startup": "347d6e106fec623740f97daef2de47962eb2b301ddfe8cb98e35d02f6233e9a2"
+      },
+      "records": [
+        {
+          "variant": "base",
+          "wall_seconds": 2.8581368070008466,
+          "milliseconds": 2607,
+          "nodes": 2389370,
+          "nps": 916520
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.841347498999312,
+          "milliseconds": 2592,
+          "nodes": 2389370,
+          "nps": 921824
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.9078309850010555,
+          "milliseconds": 2659,
+          "nodes": 2389370,
+          "nps": 898597
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.8614071550000517,
+          "milliseconds": 2608,
+          "nodes": 2389370,
+          "nps": 916169
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.8443403799992666,
+          "milliseconds": 2595,
+          "nodes": 2389370,
+          "nps": 920759
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.8594631780015334,
+          "milliseconds": 2612,
+          "nodes": 2389370,
+          "nps": 914766
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.897115670000858,
+          "milliseconds": 2639,
+          "nodes": 2389370,
+          "nps": 905407
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.8373617380002543,
+          "milliseconds": 2594,
+          "nodes": 2389370,
+          "nps": 921114
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.863110868998774,
+          "milliseconds": 2612,
+          "nodes": 2389370,
+          "nps": 914766
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.132201761000033,
+          "milliseconds": 2884,
+          "nodes": 2389370,
+          "nps": 828491
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 3.0760150739988603,
+          "milliseconds": 2706,
+          "nodes": 2389370,
+          "nps": 882989
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.85161326799971,
+          "milliseconds": 2601,
+          "nodes": 2389370,
+          "nps": 918635
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.855346295000345,
+          "milliseconds": 2606,
+          "nodes": 2389370,
+          "nps": 916872
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.8785948749991803,
+          "milliseconds": 2622,
+          "nodes": 2389370,
+          "nps": 911277
+        },
+        {
+          "variant": "startup",
+          "wall_seconds": 2.854032625999025,
+          "milliseconds": 2606,
+          "nodes": 2389370,
+          "nps": 916872
+        },
+        {
+          "variant": "base",
+          "wall_seconds": 2.8495935299997655,
+          "milliseconds": 2605,
+          "nodes": 2389370,
+          "nps": 917224
+        }
+      ],
+      "geometric_mean_speedup_percent": -2.2550235196082067,
+      "paired_log_standard_error": 0.011953883810247637,
+      "approx_paired_t_95_percent_interval_percent": [
+        -4.9796697982812965,
+        0.5477502221891146
+      ],
+      "warning": "Single machine, small sample, uncontrolled host; interval is descriptive, not an Elo or cross-machine guarantee."
+    }
+  },
+  "startup_fault": {
+    "baseline": {
+      "result": "baseline_stall_reproduced",
+      "normal_ready_ms": 418.47,
+      "held_lock_ready_ms": null,
+      "held_lock_wait_ms": 5005.07,
+      "held_lock_bestmove": null,
+      "held_lock_search_ms": null,
+      "local_nnue_fallback_verified": false,
+      "timeout_seconds": 5.0
+    },
+    "candidate": {
+      "result": "passed",
+      "normal_ready_ms": 263.85,
+      "held_lock_ready_ms": 1198.43,
+      "held_lock_wait_ms": 1198.43,
+      "held_lock_bestmove": "bestmove c2c4 ponder c7c5",
+      "held_lock_search_ms": 1.98,
+      "local_nnue_fallback_verified": true,
+      "timeout_seconds": 5.0
+    },
+    "candidate_external_pgo": {
+      "result": "passed",
+      "normal_ready_ms": 333.81,
+      "held_lock_ready_ms": 1169.53,
+      "held_lock_wait_ms": 1169.53,
+      "held_lock_bestmove": "bestmove c2c4 ponder c7c5",
+      "held_lock_search_ms": 1.76,
+      "local_nnue_fallback_verified": true,
+      "timeout_seconds": 5.0
+    }
+  },
+  "verification": {
+    "embedded": {
+      "status": "passed",
+      "mode": "full",
+      "engine": "/workspace/scratch/f3a66341553a/validation/bin/stockfish-startup",
+      "binary_sha256": "f2322afb94640d97815edfd5e76034af34cf2b36ed9f7f5df9ee82252c950a11",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "timeout_seconds": 5.0,
+      "bench_timeout_seconds": 120.0,
+      "startup": [
+        {
+          "process_to_uciok_ms": 300.514,
+          "process_to_readyok_ms": 300.69,
+          "quit_ms": 3.359
+        },
+        {
+          "process_to_uciok_ms": 264.649,
+          "process_to_readyok_ms": 264.785,
+          "quit_ms": 3.294
+        },
+        {
+          "process_to_uciok_ms": 276.581,
+          "process_to_readyok_ms": 276.72,
+          "quit_ms": 15.527
+        }
+      ],
+      "uci": {
+        "threads": 2,
+        "hash_mb": 32,
+        "options_ready_ms": 31.938,
+        "requested_nodes": 1000,
+        "reported_nodes": 2451,
+        "bestmove": "e2e4",
+        "search_isready_ms": 0.098,
+        "stop_to_bestmove_ms": 0.085
+      },
+      "perft": [
+        {
+          "name": "standard",
+          "chess960": false,
+          "depth": 5,
+          "nodes": 11609488,
+          "expected_nodes": 11609488,
+          "elapsed_ms": 87.718
+        },
+        {
+          "name": "chess960_black",
+          "chess960": true,
+          "depth": 2,
+          "nodes": 1438,
+          "expected_nodes": 1438,
+          "elapsed_ms": 0.38
+        },
+        {
+          "name": "chess960_white",
+          "chess960": true,
+          "depth": 3,
+          "nodes": 37340,
+          "expected_nodes": 37340,
+          "elapsed_ms": 0.602
+        }
+      ],
+      "bench": {
+        "nodes_searched": 2389370,
+        "expected_nodes": 2389370,
+        "process_elapsed_ms": 3611.877,
+        "reported_elapsed_ms": 3341,
+        "stable_search_lines": 690,
+        "stable_search_sha256": "69a783d70f3c6a861dd5bafcebbd3e24dbf75f2e21e16007097020ec2e6ca6dd"
+      },
+      "base": {
+        "engine": "/workspace/scratch/f3a66341553a/validation/bin/stockfish-base",
+        "binary_sha256": "2178961028eafaefb8ad07cceda45884dbf2f1bef025ad1dbe8266716d471df9",
+        "bench": {
+          "nodes_searched": 2389370,
+          "expected_nodes": 2389370,
+          "process_elapsed_ms": 3200.179,
+          "reported_elapsed_ms": 2940,
+          "stable_search_lines": 690,
+          "stable_search_sha256": "69a783d70f3c6a861dd5bafcebbd3e24dbf75f2e21e16007097020ec2e6ca6dd"
+        },
+        "deterministic_output_matches": true
+      }
+    },
+    "external_pgo": {
+      "status": "passed",
+      "mode": "full",
+      "engine": "/workspace/scratch/f3a66341553a/validation/bin/stockfish-startup-pgo",
+      "binary_sha256": "347d6e106fec623740f97daef2de47962eb2b301ddfe8cb98e35d02f6233e9a2",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "timeout_seconds": 5.0,
+      "bench_timeout_seconds": 120.0,
+      "startup": [
+        {
+          "process_to_uciok_ms": 389.332,
+          "process_to_readyok_ms": 389.613,
+          "quit_ms": 3.344
+        },
+        {
+          "process_to_uciok_ms": 379.77,
+          "process_to_readyok_ms": 381.732,
+          "quit_ms": 3.308
+        },
+        {
+          "process_to_uciok_ms": 409.958,
+          "process_to_readyok_ms": 410.057,
+          "quit_ms": 3.201
+        }
+      ],
+      "uci": {
+        "threads": 2,
+        "hash_mb": 32,
+        "options_ready_ms": 32.719,
+        "requested_nodes": 1000,
+        "reported_nodes": 1000,
+        "bestmove": "d2d4",
+        "search_isready_ms": 0.079,
+        "stop_to_bestmove_ms": 0.113
+      },
+      "perft": [
+        {
+          "name": "standard",
+          "chess960": false,
+          "depth": 5,
+          "nodes": 11609488,
+          "expected_nodes": 11609488,
+          "elapsed_ms": 66.689
+        },
+        {
+          "name": "chess960_black",
+          "chess960": true,
+          "depth": 2,
+          "nodes": 1438,
+          "expected_nodes": 1438,
+          "elapsed_ms": 0.23
+        },
+        {
+          "name": "chess960_white",
+          "chess960": true,
+          "depth": 3,
+          "nodes": 37340,
+          "expected_nodes": 37340,
+          "elapsed_ms": 0.334
+        }
+      ],
+      "bench": {
+        "nodes_searched": 2389370,
+        "expected_nodes": 2389370,
+        "process_elapsed_ms": 3029.852,
+        "reported_elapsed_ms": 2657,
+        "stable_search_lines": 690,
+        "stable_search_sha256": "69a783d70f3c6a861dd5bafcebbd3e24dbf75f2e21e16007097020ec2e6ca6dd"
+      },
+      "base": {
+        "engine": "/workspace/scratch/f3a66341553a/validation/bin/stockfish-base-pgo",
+        "binary_sha256": "d56e8dde587988bfbebe897c09ca784d3a78ff217916c8414b55e5d581fde60d",
+        "bench": {
+          "nodes_searched": 2389370,
+          "expected_nodes": 2389370,
+          "process_elapsed_ms": 2947.857,
+          "reported_elapsed_ms": 2693,
+          "stable_search_lines": 690,
+          "stable_search_sha256": "69a783d70f3c6a861dd5bafcebbd3e24dbf75f2e21e16007097020ec2e6ca6dd"
+        },
+        "deterministic_output_matches": true
+      }
+    },
+    "external_missing_network_uci": {
+      "status": "passed",
+      "mode": "uci-only",
+      "engine": "/workspace/scratch/f3a66341553a/validation/external-no-net/stockfish",
+      "binary_sha256": "347d6e106fec623740f97daef2de47962eb2b301ddfe8cb98e35d02f6233e9a2",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "timeout_seconds": 5.0,
+      "bench_timeout_seconds": 120.0,
+      "process_to_uciok_ms": 528.334,
+      "default_networks": [
+        "nn-c9e480e92425.nnue"
+      ],
+      "exit_ms": 1.127,
+      "missing_net_directory_checked": true
+    },
+    "worker_cached_engine_health": {
+      "returncode": 0,
+      "elapsed_ms": 366.71,
+      "deadline_seconds": 5,
+      "summary": [
+        "===========================",
+        "Total time (ms) : 59",
+        "Nodes searched  : 41975",
+        "Nodes/second    : 711440"
+      ]
+    }
+  }
+}
